@@ -11,7 +11,7 @@ class RepoMuseApplication : Application() {
             this,
             AppDatabase::class.java,
             "repomuse_database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
     val repository by lazy {
         ProjectRepository(database.projectDao())

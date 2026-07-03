@@ -32,9 +32,9 @@ import com.example.ui.ProjectViewModelFactory
 @Composable
 fun ProjectDetailScreen(
     repository: ProjectRepository,
-    projectId: Int,
+    projectId: String,
     onNavigateBack: () -> Unit,
-    onEditClick: (Int) -> Unit
+    onEditClick: (String) -> Unit
 ) {
     val viewModel: ProjectViewModel = viewModel(factory = ProjectViewModelFactory(repository))
     val project by viewModel.getProject(projectId).collectAsState(initial = null)

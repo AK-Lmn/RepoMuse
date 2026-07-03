@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ui.screens.AddEditProjectScreen
 import com.example.ui.screens.HomeScreen
+import com.example.ui.screens.LoginScreen
 import com.example.ui.screens.ProjectDetailScreen
 import com.example.ui.theme.MyApplicationTheme
 
@@ -30,19 +31,33 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = "home",
+                        startDestination = "login",
                         modifier = Modifier.padding(innerPadding)
                     ) {
+                        composable("login") {
+                            LoginScreen(
+                                onLoginSuccess = {
+                                    navController.navigate("home") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                },
+                                onSkip = {
+                                    navController.navigate("home") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
                         composable("home") {
                             HomeScreen(
                                 repository = repository,
-                                onAddClick = { navController.navigate("addEdit/0") },
+                                onAddClick = { navController.navigate("addEdit/new") },
                                 onProjectClick = { id -> navController.navigate("detail/$id") },
                                 onEditClick = { id -> navController.navigate("addEdit/$id") }
                             )
                         }
                         composable("addEdit/{projectId}") { backStackEntry ->
-                            val projectId = backStackEntry.arguments?.getString("projectId")?.toIntOrNull() ?: 0
+                            val projectId = backStackEntry.arguments?.getString("projectId") ?: "new"
                             AddEditProjectScreen(
                                 repository = repository,
                                 projectId = projectId,
@@ -50,7 +65,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("detail/{projectId}") { backStackEntry ->
-                            val projectId = backStackEntry.arguments?.getString("projectId")?.toIntOrNull() ?: 0
+                            val projectId = backStackEntry.arguments?.getString("projectId") ?: ""
                             ProjectDetailScreen(
                                 repository = repository,
                                 projectId = projectId,

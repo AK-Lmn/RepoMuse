@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882287212697",
+    "project_id": "repomuse-80abd",
+    "storage_bucket": "repomuse-80abd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882287212697:android:44ff0b33697eabdd85e008",
+        "android_client_info": {
+          "package_name": "com.aistudio.repomuse.mxyzp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVyXpkvwY9mNdrCGMPx-wproK-CKfCcIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

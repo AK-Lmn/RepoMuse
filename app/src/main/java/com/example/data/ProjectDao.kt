@@ -13,7 +13,7 @@ interface ProjectDao {
     fun getAllProjects(): Flow<List<Project>>
 
     @Query("SELECT * FROM projects WHERE id = :id")
-    fun getProjectById(id: Int): Flow<Project?>
+    fun getProjectById(id: String): Flow<Project?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProject(project: Project)
@@ -22,5 +22,5 @@ interface ProjectDao {
     suspend fun updateProject(project: Project)
 
     @Query("DELETE FROM projects WHERE id = :id")
-    suspend fun deleteProjectById(id: Int)
+    suspend fun deleteProjectById(id: String)
 }

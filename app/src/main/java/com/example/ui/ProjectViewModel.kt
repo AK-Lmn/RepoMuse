@@ -18,7 +18,7 @@ class ProjectViewModel(private val repository: ProjectRepository) : ViewModel() 
             initialValue = emptyList()
         )
 
-    fun getProject(id: Int): StateFlow<Project?> {
+    fun getProject(id: String): StateFlow<Project?> {
         return repository.getProject(id).stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -28,15 +28,16 @@ class ProjectViewModel(private val repository: ProjectRepository) : ViewModel() 
 
     fun saveProject(project: Project) {
         viewModelScope.launch {
-            if (project.id == 0) {
-                repository.insert(project)
+            if (project.id.isBlank() || project.id == "0" || project.id == "new") {
+                val newId = java.util.UUID.randomUUID().toString()
+                repository.insert(project.copy(id = newId))
             } else {
                 repository.update(project)
             }
         }
     }
 
-    fun deleteProject(id: Int) {
+    fun deleteProject(id: String) {
         viewModelScope.launch {
             repository.deleteById(id)
         }
