@@ -21,6 +21,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.painterResource
+import com.example.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,13 +62,19 @@ fun HomeScreen(
                 title = { 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            Icons.Default.FolderOpen, 
-                            contentDescription = null, 
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(28.dp)
+                            painter = painterResource(id = R.drawable.ic_repomuse_logo),
+                            contentDescription = "RepoMuse Logo",
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(34.dp)
                         )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text("RepoMuse", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            "RepoMuse AI", 
+                            fontWeight = FontWeight.ExtraBold, 
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                letterSpacing = 0.5.sp
+                            )
+                        )
                     }
                 },
                 actions = {
@@ -79,9 +88,13 @@ fun HomeScreen(
                         }
                     ) {
                         if (isSyncing) {
-                            CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
+                            CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.5.dp)
                         } else {
-                            Icon(androidx.compose.material.icons.Icons.Default.Sync, contentDescription = "Sync Cloud")
+                            Icon(
+                                imageVector = androidx.compose.material.icons.Icons.Default.Sync, 
+                                contentDescription = "Sync Cloud",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
                         }
                     }
                 },
@@ -92,12 +105,16 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onAddClick, 
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Project")
+            if (projects.isNotEmpty()) {
+                FloatingActionButton(
+                    onClick = onAddClick, 
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 6.dp)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Project", modifier = Modifier.size(24.dp))
+                }
             }
         }
     ) { padding ->
@@ -117,19 +134,28 @@ fun HomeScreen(
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    placeholder = { Text("Search projects...") },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    placeholder = { Text("Search projects...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { searchQuery = "" }) {
-                                Icon(Icons.Default.Clear, contentDescription = "Clear search")
+                                Icon(Icons.Default.Clear, contentDescription = "Clear search", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    shape = RoundedCornerShape(12.dp)
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f),
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f),
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                    )
                 )
             }
 
@@ -145,69 +171,107 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        // Glowing Graphic Header
-                        Surface(
-                            shape = androidx.compose.foundation.shape.CircleShape,
-                            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f),
-                            border = BorderStroke(2.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)),
-                            modifier = Modifier.size(80.dp),
-                            shadowElevation = 4.dp
+                        // Custom Brand Logo in Premium Concentric Orb
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.size(110.dp)
                         ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Icon(
-                                    Icons.Default.FolderOpen, 
-                                    contentDescription = null, 
-                                    tint = MaterialTheme.colorScheme.secondary,
-                                    modifier = Modifier.size(36.dp)
-                                )
+                            Surface(
+                                shape = androidx.compose.foundation.shape.CircleShape,
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                                modifier = Modifier.fillMaxSize()
+                            ) {}
+                            Surface(
+                                shape = androidx.compose.foundation.shape.CircleShape,
+                                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
+                                modifier = Modifier.size(86.dp),
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f))
+                            ) {}
+                            Surface(
+                                shape = androidx.compose.foundation.shape.CircleShape,
+                                color = MaterialTheme.colorScheme.surface,
+                                modifier = Modifier.size(62.dp),
+                                border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)),
+                                shadowElevation = 8.dp
+                            ) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_repomuse_logo),
+                                        contentDescription = "RepoMuse Brand",
+                                        tint = Color.Unspecified,
+                                        modifier = Modifier.size(34.dp)
+                                    )
+                                }
                             }
                         }
                         
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
                         
                         Text(
-                            "Create your first case study", 
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
+                            "Create Your First Case Study", 
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.ExtraBold,
+                                letterSpacing = 0.2.sp
+                            ),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
                         )
                         
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
                         
                         Text(
-                            "Turn your repository metadata into a polished development portfolio.", 
+                            "Turn raw repository metadata and code files into a professional, portfolio-ready case study narrative.", 
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.85f),
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 16.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp)
                         )
                         
                         Spacer(modifier = Modifier.height(28.dp))
 
-                        // Walkthrough Cards
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(10.dp),
-                            modifier = Modifier.fillMaxWidth()
+                        // Modern SaaS Onboarding Steps
+                        Card(
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.12f)),
+                            shape = RoundedCornerShape(20.dp),
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
-                            val steps = listOf(
-                                "1. Click the action button below to open the generator form.",
-                                "2. Connect a GitHub repository link or describe your manual notes.",
-                                "3. Tap 'Generate with AI' to compile structured bullet points and pitch narrative instantly!"
-                            )
-                            steps.forEach { step ->
-                                Card(
-                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)),
-                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f)),
-                                    shape = RoundedCornerShape(12.dp),
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = step,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = FontWeight.Medium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-                                    )
+                            Column(
+                                modifier = Modifier.padding(20.dp),
+                                verticalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                val steps = listOf(
+                                    "Tap the action button below to launch the portfolio composer." to "1",
+                                    "Connect a GitHub repository or describe your manual notes." to "2",
+                                    "Tap 'Generate with AI' to instantly write structured pitches, tech stack files, and full studies!" to "3"
+                                )
+                                steps.forEach { (text, stepNum) ->
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(14.dp)
+                                    ) {
+                                        Surface(
+                                            shape = RoundedCornerShape(8.dp),
+                                            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f),
+                                            modifier = Modifier.size(28.dp)
+                                        ) {
+                                            Box(contentAlignment = Alignment.Center) {
+                                                Text(
+                                                    text = stepNum,
+                                                    style = MaterialTheme.typography.labelLarge,
+                                                    fontWeight = FontWeight.ExtraBold,
+                                                    color = MaterialTheme.colorScheme.secondary
+                                                )
+                                            }
+                                        }
+                                        Text(
+                                            text = text,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -216,14 +280,23 @@ fun HomeScreen(
 
                         Button(
                             onClick = onAddClick,
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
-                            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 14.dp),
-                            elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
-                            shape = RoundedCornerShape(12.dp)
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            ),
+                            contentPadding = PaddingValues(horizontal = 32.dp, vertical = 14.dp),
+                            elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
+                            shape = RoundedCornerShape(14.dp),
+                            modifier = Modifier.fillMaxWidth().height(52.dp)
                         ) {
-                            Icon(Icons.Default.Add, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondary)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Create your first case study", color = MaterialTheme.colorScheme.onSecondary, fontWeight = FontWeight.Bold)
+                            Icon(Icons.Default.Add, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(
+                                "Create Case Study Now", 
+                                color = MaterialTheme.colorScheme.onPrimary, 
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 0.3.sp
+                            )
                         }
                     }
                 }
@@ -293,22 +366,27 @@ fun ProjectCard(
             .fillMaxWidth()
             .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f))
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.12f))
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
         ) {
-            // Elegant Left Accent Strip
+            // Elegant Left Accent Strip using a glowing vertical gradient
             Box(
                 modifier = Modifier
                     .width(6.dp)
                     .fillMaxHeight()
                     .background(
-                        color = MaterialTheme.colorScheme.primary,
+                        brush = androidx.compose.ui.graphics.Brush.verticalGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.primary,
+                                MaterialTheme.colorScheme.secondary
+                            )
+                        ),
                         shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)
                     )
             )

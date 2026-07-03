@@ -81,10 +81,15 @@ As this is an Android Native App, standard Node.js commands (`npm install`, `npm
 3. **Environment Setup:** Create a `.env` file in the root directory and add your Gemini API key:
    `GEMINI_API_KEY=your_actual_key_here`
 4. **Firebase Setup:** 
-   - Go to the Firebase Console and create a project.
+   - Go to the Firebase Console and create a new project.
    - Add an Android app and register your application ID (`com.aistudio.repomuse.mxyzp`).
-   - Enable GitHub Authentication in the Firebase Console (Requires setting up an OAuth App in GitHub).
-   - Download `google-services.json` and place it in the `app/` folder.
+   - Enable **GitHub Authentication** in the Firebase Console under **Authentication -> Sign-in method** (requires setting up an OAuth App in GitHub Developer Settings and copying the callback URL).
+   - Enable **Cloud Firestore** and deploy the database rules documented in Section 5.
+   - Download your custom `google-services.json` configuration file from the Firebase Console.
+   - **Crucial Security Rule:** Place this downloaded `google-services.json` file inside your local `app/` folder. **NEVER commit your real `google-services.json` to version control.** It contains active Google API credentials that GitHub Secret Scanning will flag.
+   - To assist local development builds, a safe template is available at `app/google-services.example.json`. You can copy this file to `app/google-services.json` and populate it with your credentials.
+   - **API Key Restrictions:** Go to the [Google Cloud Console Credentials Page](https://console.cloud.google.com/apis/credentials), find the API Key generated for your Firebase project, and restrict its usage (e.g., restrict usage to only necessary Firebase APIs and restrict HTTP referrers/Android apps if needed).
+
 5. **Run the App:** Click the green "Run" (Play) button in Android Studio, or run `./gradlew installDebug` from the terminal to install it on a connected device or emulator.
 
 ## 10. Current Limitations

@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -294,16 +295,26 @@ fun AddEditProjectScreen(
                         isGenerating = false
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                ),
+                shape = RoundedCornerShape(14.dp),
                 enabled = !isGenerating
             ) {
                 if (isGenerating) {
-                    CircularProgressIndicator(modifier = Modifier.size(24.dp), color = MaterialTheme.colorScheme.onSecondary)
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp), 
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        strokeWidth = 2.5.dp
+                    )
                 } else {
                     Icon(Icons.Default.AutoAwesome, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Generate with AI")
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text("Generate with AI", fontWeight = FontWeight.Bold)
                 }
             }
 
@@ -321,20 +332,34 @@ fun AddEditProjectScreen(
                 )
             }
 
+            // Define reusable premium input text colors
+            val inputColors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f),
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.1f),
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f),
+                disabledBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.08f),
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+            )
+
             // Group 1: Project Identity Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f)),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f))
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.12f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(18.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
                         text = "Project Identity",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.primary
                     )
 
@@ -355,7 +380,8 @@ fun AddEditProjectScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
 
                     val isUrlInvalid = remember(githubUrl) {
@@ -376,7 +402,8 @@ fun AddEditProjectScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
 
                     OutlinedTextField(
@@ -386,7 +413,8 @@ fun AddEditProjectScreen(
                         supportingText = { Text("Link to your live production website/app") },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
                 }
             }
@@ -394,17 +422,19 @@ fun AddEditProjectScreen(
             // Group 2: Portfolio Details Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f)),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f))
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.12f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(18.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
                         text = "Generated Portfolio Details",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.secondary
                     )
 
@@ -415,7 +445,8 @@ fun AddEditProjectScreen(
                         supportingText = { Text("1-2 sentence compelling tagline") },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 2,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
 
                     OutlinedTextField(
@@ -425,7 +456,8 @@ fun AddEditProjectScreen(
                         supportingText = { Text("What real-world frustration does this resolve?") },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
 
                     OutlinedTextField(
@@ -434,7 +466,8 @@ fun AddEditProjectScreen(
                         label = { Text("Tech Stack (comma separated)") },
                         supportingText = { Text("e.g. Next.js, Jetpack Compose, FastAPI") },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
 
                     OutlinedTextField(
@@ -444,7 +477,8 @@ fun AddEditProjectScreen(
                         supportingText = { Text("Describe 3-4 features of this project") },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
 
                     OutlinedTextField(
@@ -454,7 +488,8 @@ fun AddEditProjectScreen(
                         supportingText = { Text("What technical bottlenecks did you conquer?") },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
                 }
             }
@@ -462,17 +497,19 @@ fun AddEditProjectScreen(
             // Group 3: Resume Bullets & In-Depth Case Study Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f)),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f))
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.12f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(18.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
                         text = "Professional Assets",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.tertiary
                     )
 
@@ -483,7 +520,8 @@ fun AddEditProjectScreen(
                         supportingText = { Text("Action-oriented resume/CV items to copy-paste") },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
 
                     OutlinedTextField(
@@ -494,7 +532,8 @@ fun AddEditProjectScreen(
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 6,
                         maxLines = Int.MAX_VALUE, // Let it expand infinitely to make long text easy to edit!
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
 
                     OutlinedTextField(
@@ -504,7 +543,8 @@ fun AddEditProjectScreen(
                         supportingText = { Text("e.g., Web App, AI, Open Source") },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        enabled = !isGenerating
+                        enabled = !isGenerating,
+                        colors = inputColors
                     )
                 }
             }
