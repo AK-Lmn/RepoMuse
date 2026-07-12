@@ -81,7 +81,8 @@ Follow these steps to open, configure, and compile **RepoMuse AI** using Android
 
 ### Prerequisites
 *   Install the latest version of [Android Studio](https://developer.android.com/studio) (Ladybug or newer recommended).
-*   Install JDK 17 (bundled automatically with modern Android Studio).
+*   Install **JDK 17** (Ensure your project structure uses Java 17 for both Gradle and Kotlin compilation).
+*   Compatible with **Gradle 9.6.1**.
 
 ---
 
@@ -107,7 +108,7 @@ RepoMuse utilizes the **Secrets Gradle Plugin** to securely inject credentials a
    ```
 2. Open the `.env` file and insert your active Google AI Studio Gemini API Key:
    ```env
-   GEMINI_API_KEY=AIzaSyYourGeminiApiKeyHere
+   GEMINI_API_KEY=YOUR_ACTUAL_API_KEY_HERE
    ```
    *(You can obtain a free Gemini API key from the [Google AI Studio Console](https://aistudio.google.com/)).*
 
@@ -119,8 +120,9 @@ To enable cloud synchronization and GitHub OAuth login, you must link the app to
 1. Go to the [Firebase Console](https://console.firebase.google.com/).
 2. Click **Add Project** and follow the prompts to create a new project.
 3. Register a new **Android App** inside your project settings:
-    *   **Android Package Name:** `com.aistudio.repomuse.mxyzp` (Verify your target `applicationId` in your `app/build.gradle.kts`).
-4. Download the `google-services.json` configuration file.
+    *   **Android Package Name:** `com.aistudio.repomuse.mxyzp`
+4. **Important:** Under Project Settings, add your **SHA-1 and SHA-256 fingerprints**. You can generate these by running `./gradlew signingReport` in the Android Studio terminal.
+5. Download the `google-services.json` configuration file.
 
 ---
 
