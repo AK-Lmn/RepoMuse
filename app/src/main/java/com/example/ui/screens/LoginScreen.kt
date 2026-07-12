@@ -28,10 +28,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.Slate100
-import com.example.ui.theme.Slate700
-import com.example.ui.theme.Slate800
-import com.example.ui.theme.Slate900
+import com.example.ui.theme.DeepSpace
+import com.example.ui.theme.IndigoPrimary
+import com.example.ui.theme.SurfaceDark
+import com.example.ui.theme.SurfaceLighter
+import com.example.ui.theme.TextPrimary
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
@@ -72,9 +73,9 @@ fun LoginScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Slate900,
-                        Color(0xFF131B2E),
-                        Slate800
+                        DeepSpace,
+                        SurfaceDark,
+                        Color(0xFF0F172A)
                     )
                 )
             )
@@ -93,37 +94,37 @@ fun LoginScreen(
             // Brand Header Area with custom premium illustration badge
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier.size(150.dp)
             ) {
                 // Background outer glow
                 Surface(
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                     modifier = Modifier.fillMaxSize()
                 ) {}
                 
                 // Middle ring
                 Surface(
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
-                    modifier = Modifier.size(90.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f))
+                    color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.08f),
+                    modifier = Modifier.size(115.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f))
                 ) {}
 
                 // Inner core
                 Surface(
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.surface,
-                    modifier = Modifier.size(64.dp),
-                    border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)),
-                    shadowElevation = 8.dp
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier.size(80.dp),
+                    border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)),
+                    shadowElevation = 12.dp
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_repomuse_logo),
                             contentDescription = "RepoMuse Brand Logo",
                             tint = Color.Unspecified,
-                            modifier = Modifier.size(34.dp)
+                            modifier = Modifier.size(44.dp)
                         )
                     }
                 }
@@ -137,7 +138,7 @@ fun LoginScreen(
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = 1.sp
                 ),
-                color = Slate100,
+                color = TextPrimary,
                 textAlign = TextAlign.Center
             )
             
@@ -159,7 +160,7 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Slate800.copy(alpha = 0.6f)
+                    containerColor = SurfaceDark.copy(alpha = 0.6f)
                 ),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(24.dp),

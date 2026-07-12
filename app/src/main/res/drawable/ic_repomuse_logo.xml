@@ -1,40 +1,34 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
 
-    <!-- Glowing Background Glow/Shadow effect -->
+    <!-- Subtle Glow Background -->
     <path
-        android:pathData="M 54,24 A 30,30 0 1 1 53.9,24"
-        android:fillColor="#0C203F" />
+        android:pathData="M60,60m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0"
+        android:fillColor="#6366F1"
+        android:fillAlpha="0.05"/>
 
-    <!-- Stylized Developer Folder Base -->
+    <!-- Abstract "M" + Code Symbol -->
+    <!-- Gradient simulation via two paths -->
     <path
-        android:pathData="M24,34 L44,34 L50,42 L84,42 C86.2,42 88,43.8 88,46 L88,78 C88,80.2 86.2,82 84,82 L24,82 C21.8,82 20,80.2 20,78 L20,38 C20,35.8 21.8,34 24,34 Z"
-        android:strokeColor="#00D2FF"
-        android:strokeWidth="3.5"
+        android:pathData="M35,75 L50,35 L65,55"
+        android:strokeColor="#6366F1"
+        android:strokeWidth="8"
         android:strokeLineCap="round"
-        android:strokeLineJoin="round"
-        android:fillColor="#111B30" />
+        android:strokeLineJoin="round" />
 
-    <!-- Document Page inside folder showing transformation -->
     <path
-        android:pathData="M40,50 H74 M40,58 H68 M40,66 H60"
-        android:strokeColor="#00F2FE"
-        android:strokeWidth="3.5"
-        android:strokeLineCap="round" />
+        android:pathData="M65,55 L80,35 L95,75"
+        android:strokeColor="#A855F7"
+        android:strokeWidth="8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 
-    <!-- A stunning AI Magic Sparkle / Star of Quality -->
-    <!-- Centered at x=78, y=34 -->
+    <!-- AI Sparkle Core -->
     <path
-        android:pathData="M78,22 L80.5,29 L88,31 L80.5,33 L78,40 L75.5,33 L68,31 L75.5,29 Z"
-        android:fillColor="#00F2FE" />
-        
-    <!-- Smaller companion sparkle -->
-    <path
-        android:pathData="M32,22 L33.2,25.5 L37,26.5 L33.2,27.5 L32,31 L30.8,27.5 L27,26.5 L30.8,25.5 Z"
-        android:fillColor="#38EF7D" />
+        android:pathData="M65,22 L67,27 L72,29 L67,31 L65,36 L63,31 L58,29 L63,27 Z"
+        android:fillColor="#EC4899" />
 
 </vector>

@@ -2,16 +2,25 @@ package com.example.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Slate900 = Color(0xFF0F172A)
-val Slate800 = Color(0xFF1E293B)
-val Slate700 = Color(0xFF334155)
-val Slate400 = Color(0xFF94A3B8)
-val Slate100 = Color(0xFFF1F5F9)
+// Modern Indigo & Violet Palette
+val DeepSpace = Color(0xFF0B0E14)
+val SurfaceDark = Color(0xFF161B22)
+val SurfaceLighter = Color(0xFF21262D)
 
-val PrimaryBlue = Color(0xFF3B82F6) // Neon/Tech blue
-val PrimaryBlueLight = Color(0xFF60A5FA)
-val AccentTeal = Color(0xFF2DD4BF)
+val IndigoPrimary = Color(0xFF6366F1)
+val VioletSecondary = Color(0xFFA855F7)
+val PinkAccent = Color(0xFFEC4899)
 
-val GlassBackground = Color(0x1AFFFFFF)
-val GlassBorder = Color(0x33FFFFFF)
+val TextPrimary = Color(0xFFF8FAFC)
+val TextSecondary = Color(0xFF94A3B8)
 
+val SuccessGreen = Color(0xFF10B981)
+val ErrorRed = Color(0xFFEF4444)
+
+// Keeping legacy names if needed by some components, but pointing to new colors
+val Slate900 = DeepSpace
+val Slate800 = SurfaceDark
+val Slate700 = SurfaceLighter
+val Slate100 = TextPrimary
+val PrimaryBlue = IndigoPrimary
+val AccentTeal = VioletSecondary

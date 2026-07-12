@@ -99,7 +99,7 @@ fun HomeScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
+                    containerColor = Color.Transparent,
                     titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
@@ -174,32 +174,32 @@ fun HomeScreen(
                         // Custom Brand Logo in Premium Concentric Orb
                         Box(
                             contentAlignment = Alignment.Center,
-                            modifier = Modifier.size(110.dp)
+                            modifier = Modifier.size(140.dp)
                         ) {
                             Surface(
                                 shape = androidx.compose.foundation.shape.CircleShape,
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                                 modifier = Modifier.fillMaxSize()
                             ) {}
                             Surface(
                                 shape = androidx.compose.foundation.shape.CircleShape,
-                                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
-                                modifier = Modifier.size(86.dp),
-                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f))
+                                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.08f),
+                                modifier = Modifier.size(110.dp),
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f))
                             ) {}
                             Surface(
                                 shape = androidx.compose.foundation.shape.CircleShape,
-                                color = MaterialTheme.colorScheme.surface,
-                                modifier = Modifier.size(62.dp),
-                                border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)),
-                                shadowElevation = 8.dp
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                modifier = Modifier.size(80.dp),
+                                border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)),
+                                shadowElevation = 12.dp
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.ic_repomuse_logo),
                                         contentDescription = "RepoMuse Brand",
                                         tint = Color.Unspecified,
-                                        modifier = Modifier.size(34.dp)
+                                        modifier = Modifier.size(44.dp)
                                     )
                                 }
                             }
@@ -365,10 +365,10 @@ fun ProjectCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.12f))
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
     ) {
         Row(
             modifier = Modifier

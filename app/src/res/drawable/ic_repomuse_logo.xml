@@ -1,0 +1,37 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <group>
+        <!-- Background Gradient Orb -->
+        <path
+            android:pathData="M60,20C82.09,20 100,37.91 100,60C100,82.09 82.09,100 60,100C37.91,100 20,82.09 20,60C20,37.91 37.91,20 60,20Z"
+            android:fillColor="#1A237E"
+            android:fillAlpha="0.1"/>
+
+        <!-- The "Muse" M + Code Brackets Stylized -->
+        <!-- Left bracket / M leg -->
+        <path
+            android:pathData="M35,75L45,40L60,60"
+            android:strokeColor="#6366F1"
+            android:strokeWidth="8"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+
+        <!-- Right bracket / M leg -->
+        <path
+            android:pathData="M60,60L75,40L85,75"
+            android:strokeColor="#A855F7"
+            android:strokeWidth="8"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+
+        <!-- AI Sparkle / Dot above the M -->
+        <path
+            android:pathData="M60,25C62,25 63,27 63,29C63,31 62,33 60,33C58,33 57,31 57,29C57,27 58,25 60,25Z"
+            android:fillColor="#EC4899" />
+    </group>
+</vector>
