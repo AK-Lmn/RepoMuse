@@ -1,193 +1,99 @@
-# 🚀 RepoMuse AI
+# RepoMuse AI
 
-**RepoMuse AI** is a modern, native Android application that empowers developers to instantly turn their public GitHub repositories into professional, portfolio-ready case studies. Powered by Google's **Gemini 3.5 Flash** and integrated with the GitHub REST API, RepoMuse automates the writing of pitches, problem statements, core features, technical challenges, and resume bullet points to help you showcase your work to recruiters and peers.
+[![Kotlin](https://img.shields.io/badge/Kotlin-Android-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/)
+[![Android](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)](https://www.android.com/)
+[![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/compose)
+[![Firebase](https://img.shields.io/badge/Backend-Firebase-FFCA28?logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![Gemini API](https://img.shields.io/badge/AI-Gemini%20API-4285F4?logo=google&logoColor=white)](https://ai.google.dev/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/AK-Lmn/RepoMuse?display_name=tag&sort=semver)](https://github.com/AK-Lmn/RepoMuse/releases/latest)
 
----
+RepoMuse AI is a native Android app that turns public GitHub repositories into professional, portfolio-ready case studies. It uses the GitHub REST API and Google Gemini API via REST/OkHttp to draft pitches, problem statements, core features, technical challenges, and resume bullet points.
 
-## 🎨 Screen Showcase
+## Download
+
+Download the APK from [GitHub Releases](https://github.com/AK-Lmn/RepoMuse/releases/latest). Android may display a warning when installing an APK obtained outside the Play Store; review the source and install only if you trust it.
+
+## Screen Showcase
 
 <p align="center">
-  <img src="assets/onboarding_mockup.png" width="300" alt="RepoMuse Login Screen" style="margin-right: 15px;" />
-  <img src="assets/dashboard_mockup.png" width="300" alt="RepoMuse Dashboard" />
+  <img src="assets/onboarding_mockup.png" width="300" alt="RepoMuse onboarding and login screen" />
+  <img src="assets/dashboard_mockup.png" width="300" alt="RepoMuse project dashboard" />
 </p>
+<p align="center"><em>Left: onboarding and login. Right: the project dashboard.</em></p>
 
----
+## Features
 
-## ✨ Features
+- **GitHub metadata extraction:** Paste a public repository URL to fetch its primary language, topics, and description.
+- **AI case-study generation:** Uses the Gemini API (`gemini-3.5-flash`) to draft pitches, problem statements, challenges, and resume bullets.
+- **Offline-first storage with sync:** Room stores projects locally; Cloud Firestore synchronizes them when signed in.
+- **GitHub authentication:** Firebase Authentication handles GitHub sign-in.
+- **PDF export:** Exports a finished case study to a structured PDF on the device.
+- **Native UI:** Kotlin and Jetpack Compose with Material Design 3.
 
-*   **🔍 Auto-Extraction from GitHub:** Paste any public repository URL to automatically fetch its primary language, topics, and description.
-*   **🧠 AI Case Study Generation:** Leverages Google's **Gemini 3.5 Flash** to draft custom pitches, problem statements, detailed technical challenges, and high-impact resume bullets.
-*   **🔄 Offline-First with Hybrid Sync:**
-    *   **Offline Mode:** Fully functional offline local storage powered by **Room Database**.
-    *   **Cloud Sync:** Real-time synchronization across devices using **Cloud Firestore** when signed in with GitHub.
-*   **🔐 GitHub Auth Integration:** Seamless GitHub authentication handled via Firebase Authentication.
-*   **📄 Export to PDF:** Formulates and compiles your finished case study into a structured, elegant PDF document saved directly to your device's Downloads folder.
-*   **📱 Responsive & Fluid UI:** Fully styled using **Material Design 3 (M3)** with custom dark-mode aesthetics, responsive layouts, and helpful notifications.
+## Status
 
----
+v1.0.0 is the first public release. The app is functional but still early-stage. To build locally, provide your own Gemini API key and Firebase configuration. Users who only want to try the app can download the APK through [Releases](https://github.com/AK-Lmn/RepoMuse/releases/latest).
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-*   **Language:** Kotlin (100% Native)
-*   **UI Framework:** Jetpack Compose (Material Design 3)
-*   **Architecture:** MVVM (Model-View-ViewModel) with Kotlin Coroutines & Flow
-*   **Local Storage:** Room Database (SQLite SQLite-wrapper)
-*   **Cloud Backend:** Firebase (Auth, Firestore)
-*   **AI Engine:** Google Gemini API via REST/OkHttp (`gemini-3.5-flash`)
-*   **HTTP Client:** OkHttp & Retrofit (for interacting with the public GitHub REST API)
-*   **PDF Generation:** Android Graphics (`PdfDocument`, Canvas, & Paint APIs)
+- **Platform:** Native Android
+- **Language:** Kotlin
+- **UI:** Jetpack Compose (Material Design 3)
+- **Architecture:** MVVM with Kotlin Coroutines and Flow
+- **Local storage:** Room
+- **Cloud:** Firebase Authentication and Cloud Firestore
+- **Repository data:** GitHub REST API via OkHttp
+- **AI:** Google Gemini API via REST/OkHttp (`gemini-3.5-flash`)
+- **PDF export:** Android `PdfDocument`, Canvas, and Paint APIs
 
----
+## Known Limitations
 
-## 📂 Project Structure
+- Repository metadata fetches use public GitHub repository data.
+- Unauthenticated GitHub API requests may be rate-limited.
+- AI generation depends on the user's Gemini API key.
+- Firebase login and sync require a local `app/google-services.json` setup.
+- The APK is not Play Store signed or distributed yet.
 
-```text
-├── app/
-│   ├── src/main/
-│   │   ├── java/com/example/
-│   │   │   ├── RepoMuseApplication.kt     # Application entry-point
-│   │   │   ├── MainActivity.kt            # Core activity hosting Compose Navigation
-│   │   │   ├── data/                      # Data layer (Models, Room, Services, Repositories)
-│   │   │   │   ├── AppDatabase.kt         # Room database configuration
-│   │   │   │   ├── Project.kt             # Case study entity model (uses UUID primary key)
-│   │   │   │   ├── ProjectDao.kt          # Room query statements
-│   │   │   │   ├── ProjectRepository.kt   # Hybrid repository coordinating Room and Firestore
-│   │   │   │   ├── GeminiService.kt       # API handler calling Google's Gemini models
-│   │   │   │   └── GitHubService.kt       # Repository fetcher via GitHub REST API
-│   │   │   ├── ui/                        # Presentation layer
-│   │   │   │   ├── ProjectViewModel.kt    # VM managing case study states, inserts, and sync
-│   │   │   │   ├── screens/               # Screen composables
-│   │   │   │   │   ├── HomeScreen.kt          # Interactive dashboard list
-│   │   │   │   │   ├── LoginScreen.kt         # Auth handler & offline skip option
-│   │   │   │   │   ├── AddEditProjectScreen.kt# AI generation form & custom field editor
-│   │   │   │   │   └── ProjectDetailScreen.kt # Details view with PDF export trigger
-│   │   │   │   └── theme/                 # App color palettes, typographies, and styles
-│   │   │   └── utils/                     
-│   │   │       └── PdfExporter.kt         # Canvas-drawn PDF generator
-│   │   └── res/                           # Layouts, strings, drawables, and XML resource assets
-│   └── build.gradle.kts                   # App-level build config
-├── gradle/                                # Shared Version Catalog & Gradle configurations
-├── build.gradle.kts                       # Project-level build config
-├── settings.gradle.kts                    # Modules configuration
-├── .env.example                           # Template for secure API environment keys
-└── PROJECT_GUIDE.md                       # Comprehensive guide with code audit metrics
-```
-
----
-
-## ⚙️ How to Set Up & Run Locally
-
-Follow these steps to open, configure, and compile **RepoMuse AI** using Android Studio.
+## Build Locally
 
 ### Prerequisites
-*   Install the latest version of [Android Studio](https://developer.android.com/studio) (Ladybug or newer recommended).
-*   Install **JDK 17** (Ensure your project structure uses Java 17 for both Gradle and Kotlin compilation).
-*   Compatible with **Gradle 9.6.1**.
 
----
+- Android Studio (Ladybug or newer recommended)
+- JDK 17
+- Gradle 9.6.1-compatible environment
 
-### Step 1: Clone and Open the Project
-1. Clone the repository to your local machine:
+### Setup
+
+1. Clone the repository:
+
    ```bash
-   git clone https://github.com/YOUR_USERNAME/RepoMuse.git
+   git clone https://github.com/AK-Lmn/RepoMuse.git
    ```
-2. Open Android Studio.
-3. Select **File -> Open** (or **Open an Existing Project** from the welcome screen).
-4. Navigate to the folder where you cloned the repository and click **OK**.
-5. Wait for Gradle to download all dependencies and sync the project.
 
----
+2. Create a root `.env` file using `.env.example`, then add your own Gemini API key:
 
-### Step 2: Configure Your Gemini API Key
-RepoMuse utilizes the **Secrets Gradle Plugin** to securely inject credentials at build time.
-
-1. In the root directory of the project, create a new file named `.env`:
-   ```bash
-   # Root directory level
-   touch .env
-   ```
-2. Open the `.env` file and insert your active Google AI Studio Gemini API Key:
    ```env
-   GEMINI_API_KEY=YOUR_ACTUAL_API_KEY_HERE
-   ```
-   *(You can obtain a free Gemini API key from the [Google AI Studio Console](https://aistudio.google.com/)).*
-
----
-
-### Step 3: Set Up Firebase
-To enable cloud synchronization and GitHub OAuth login, you must link the app to your own Firebase project.
-
-1. Go to the [Firebase Console](https://console.firebase.google.com/).
-2. Click **Add Project** and follow the prompts to create a new project.
-3. Register a new **Android App** inside your project settings:
-    *   **Android Package Name:** `com.aistudio.repomuse.mxyzp`
-4. **Important:** Under Project Settings, add your **SHA-1 and SHA-256 fingerprints**. You can generate these by running `./gradlew signingReport` in the Android Studio terminal.
-5. Download the `google-services.json` configuration file.
-
----
-
-### Step 4: Add `google-services.json` (Security-Safe)
-Since our repository ignores active configurations for security reasons (to prevent credential scans):
-
-1. Paste your downloaded `google-services.json` directly into the `app/` folder of the project.
-   ```text
-   RepoMuse/
-   ├── app/
-   │   ├── google-services.json  <-- PLACE FILE HERE
-   │   └── build.gradle.kts
-   ```
-2. *Note: A safe template is also provided at `app/google-services.example.json` for reference.*
-
----
-
-### Step 5: Enable Authentication & Firestore Database
-
-#### 1. Enable GitHub Sign-In
-1. In the Firebase Console, navigate to **Authentication -> Sign-in method**.
-2. Click **Add new provider** and choose **GitHub**.
-3. Toggle to **Enable**.
-4. To complete setup, register an **OAuth Application** on GitHub:
-    *   Go to **GitHub Settings -> Developer Settings -> OAuth Apps -> Register a new application**.
-    *   Copy the **Authorization Callback URL** shown in the Firebase Console and paste it into GitHub.
-    *   Copy the **Client ID** and **Client Secret** generated by GitHub and paste them back into the Firebase Console prompt. Click **Save**.
-
-#### 2. Enable Cloud Firestore
-1. Navigate to **Firestore Database** in the Firebase Sidebar and click **Create Database**.
-2. Deploy the following security rules to ensure user-isolated storage:
-   ```javascript
-   rules_version = '2';
-   service cloud.firestore {
-     match /databases/{database}/documents {
-       match /users/{userId}/projects/{projectId} {
-         allow read, write: if request.auth != null && request.auth.uid == userId;
-       }
-     }
-   }
+   GEMINI_API_KEY=YOUR_API_KEY
    ```
 
----
+3. Create a Firebase project, register Android package `com.aistudio.repomuse.mxyzp`, and download its `google-services.json` file.
+4. Place that file at `app/google-services.json`. It is intentionally ignored by Git; `app/google-services.example.json` is a safe template.
+5. In Firebase Authentication, enable GitHub sign-in and configure the GitHub OAuth application. Enable Cloud Firestore if you want sync.
+6. Open the project in Android Studio, sync Gradle, and run the `app` configuration, or run:
 
-### Step 6: Compile & Run!
-1. Connect an Android Device via USB (with **USB Debugging** turned on) or start a Virtual Device (Emulator) inside Android Studio.
-2. Select the `app` configuration in the toolbar and click the green **Run (Play)** button.
-3. Alternately, compile and install directly from the built-in Android Studio terminal:
    ```bash
    ./gradlew installDebug
    ```
 
----
+## Security
 
-## 🔒 Security Best Practices
+`.env` and `google-services.json` are ignored and must never be committed. No real API keys, Firebase configuration, or other credentials are included in this repository. If a key is exposed, revoke or rotate it in the [Google Cloud Console](https://console.cloud.google.com/apis/credentials) before dismissing any secret-scanning alert.
 
-*   **API Key Protection:** The `.env` file and `google-services.json` are listed in `.gitignore` and are excluded from version control. Never commit them to a public repository.
-*   **Rotation:** If you ever expose an active key accidentally, immediately rotate it on the [Google Cloud Credentials Console](https://console.cloud.google.com/apis/credentials) and dismiss any alerts.
+## Support and Contact
 
----
+For bugs or feature requests, open a [GitHub Issue](https://github.com/AK-Lmn/RepoMuse/issues). RepoMuse is an independent app and is not an official GitHub product.
 
-## 💡 Contributing & Feedback
+## License
 
-If you find a bug, have optimization suggestions, or want to contribute new layout templates for PDF exports:
-1. Open an issue detailing your suggestions.
-2. Fork the repository, apply your changes, and submit a Pull Request!
-
-*Happy Documenting! ✍️*
+Released under the [MIT License](LICENSE).
