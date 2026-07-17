@@ -33,7 +33,7 @@
 *   **Architecture:** MVVM (Model-View-ViewModel) with Kotlin Coroutines & Flow
 *   **Local Storage:** Room Database (SQLite SQLite-wrapper)
 *   **Cloud Backend:** Firebase (Auth, Firestore)
-*   **AI Engine:** Google Gemini SDK (`gemini-3.5-flash`)
+*   **AI Engine:** Google Gemini API via REST/OkHttp (`gemini-3.5-flash`)
 *   **HTTP Client:** OkHttp & Retrofit (for interacting with the public GitHub REST API)
 *   **PDF Generation:** Android Graphics (`PdfDocument`, Canvas, & Paint APIs)
 
