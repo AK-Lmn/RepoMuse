@@ -43,15 +43,17 @@ class ProjectRepository(private val projectDao: ProjectDao) {
     suspend fun syncFromCloud() {
         val userId = getUserId() ?: return
         try {
+            // Only attempt sync if we have a valid userId
             val snapshot = getCloudRef(userId).get().await()
-            val cloudProjects = snapshot.toObjects(Project::class.java)
-            cloudProjects.forEach { project ->
-                // Basic strategy: just insert, assuming IDs align or create duplicates for now
-                // A better approach would be upsert, which Room's OnConflictStrategy.REPLACE does.
-                projectDao.insertProject(project) 
+            if (!snapshot.isEmpty) {
+                val cloudProjects = snapshot.toObjects(Project::class.java)
+                cloudProjects.forEach { project ->
+                    projectDao.insertProject(project) 
+                }
             }
         } catch (e: Exception) {
-            // Ignore for MVP
+            // Silent fail for sync in background/on-start is intentional for offline support
+            android.util.Log.w("ProjectRepository", "Cloud sync failed: ${e.message}")
         }
     }
 }

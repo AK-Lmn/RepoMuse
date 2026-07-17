@@ -11,10 +11,17 @@ object GitHubService {
 
     suspend fun getRepoMetadata(repoUrl: String): String = withContext(Dispatchers.IO) {
         try {
-            // Extract owner and repo from URL
-            // e.g., https://github.com/owner/repo
+            // Robust parsing for GitHub URLs
+            // Matches: github.com/owner/repo, https://github.com/owner/repo/, http://github.com/owner/repo.git etc.
+            val cleanUrl = repoUrl.trim()
+                .removePrefix("https://")
+                .removePrefix("http://")
+                .split("?")[0] // Remove query params
+                .split("#")[0] // Remove fragments
+                .removeSuffix("/")
+
             val regex = Regex("github\\.com/([^/]+)/([^/]+)")
-            val matchResult = regex.find(repoUrl)
+            val matchResult = regex.find(cleanUrl)
             
             if (matchResult == null) {
                 return@withContext ""
@@ -26,6 +33,7 @@ object GitHubService {
             val request = Request.Builder()
                 .url("https://api.github.com/repos/$owner/$repo")
                 .header("Accept", "application/vnd.github.v3+json")
+                .header("User-Agent", "RepoMuse-App") // Good practice for GitHub API
                 .build()
                 
             client.newCall(request).execute().use { response ->

@@ -121,6 +121,7 @@ fun AddEditProjectScreen(
     var tags by remember { mutableStateOf("") }
     
     var showTitleError by remember { mutableStateOf(false) }
+    var isGenerating by remember { mutableStateOf(false) }
     
     // Load existing data if editing
     LaunchedEffect(existingProject) {
@@ -154,34 +155,42 @@ fun AddEditProjectScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        if (title.isBlank()) {
-                            showTitleError = true
-                            coroutineScope.launch {
-                                snackbarHostState.showSnackbar("Project Title is required before saving.")
-                            }
-                        } else {
-                            viewModel.saveProject(
-                                Project(
-                                    id = if (projectId == "new") "" else projectId,
-                                    title = title,
-                                    githubUrl = githubUrl,
-                                    liveUrl = liveUrl,
-                                    pitch = pitch,
-                                    problem = problem,
-                                    features = features,
-                                    techStack = techStack,
-                                    challenges = challenges,
-                                    resumeBullets = resumeBullets,
-                                    caseStudy = caseStudy,
-                                    tags = tags
+                    IconButton(
+                        onClick = {
+                            if (title.isBlank()) {
+                                showTitleError = true
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("Project Title is required before saving.")
+                                }
+                            } else {
+                                viewModel.saveProject(
+                                    Project(
+                                        id = if (projectId == "new") "" else projectId,
+                                        title = title,
+                                        githubUrl = githubUrl,
+                                        liveUrl = liveUrl,
+                                        pitch = pitch,
+                                        problem = problem,
+                                        features = features,
+                                        techStack = techStack,
+                                        challenges = challenges,
+                                        resumeBullets = resumeBullets,
+                                        caseStudy = caseStudy,
+                                        tags = tags
+                                    )
                                 )
-                            )
-                            Toast.makeText(context, "Project saved successfully!", Toast.LENGTH_SHORT).show()
-                            onNavigateBack()
-                        }
-                    }) {
-                        Icon(Icons.Default.Save, contentDescription = "Save Project")
+                                Toast.makeText(context, "Project saved successfully!", Toast.LENGTH_SHORT).show()
+                                onNavigateBack()
+                            }
+                        },
+                        enabled = !isGenerating // Safety: Disable save while AI is running
+                    ) {
+                        Icon(
+                            Icons.Default.Save, 
+                            contentDescription = "Save Project",
+                            tint = if (isGenerating) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f) 
+                                   else MaterialTheme.colorScheme.primary
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -199,8 +208,6 @@ fun AddEditProjectScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            var isGenerating by remember { mutableStateOf(false) }
-
             Button(
                 onClick = { 
                     coroutineScope.launch {
@@ -390,7 +397,7 @@ fun AddEditProjectScreen(
                     )
 
                     val isUrlInvalid = remember(githubUrl) {
-                        githubUrl.isNotBlank() && !Regex("github\\.com/([^/]+)/([^/]+)").containsMatchIn(githubUrl)
+                        githubUrl.isNotBlank() && !Regex("github\\.com/[^/]+/[^/]+").containsMatchIn(githubUrl.lowercase())
                     }
 
                     OutlinedTextField(
