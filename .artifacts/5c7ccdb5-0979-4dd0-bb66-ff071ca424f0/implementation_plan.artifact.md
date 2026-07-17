@@ -1,51 +1,54 @@
-# Pre-release QA Fixes for RepoMuse Android
+# Pre-release QA Fixes for RepoMuse Android (Revised)
 
 This plan addresses several UX and stability issues identified during the pre-release QA pass, focusing on offline flow, GitHub URL handling, Gemini error handling, and UI polish.
 
+## User Review Required
+
+> [!IMPORTANT]
+> **Gemini Model:** As per user instructions, the Gemini model `gemini-3.5-flash` will **NOT** be changed. It is the intended model for this project.
+
 ## Proposed Changes
 
-### 1. Offline Flow & Stability
-*   **[MODIFY] [ProjectViewModel.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/ui/ProjectViewModel.kt)**
-    *   Ensure `saveProject` handles blank/new IDs correctly to avoid navigation crashes. (Already mostly correct, will double check).
-*   **[MODIFY] [ProjectRepository.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/data/ProjectRepository.kt)**
-    *   Ensure `syncFromCloud` doesn't crash if the user is offline or Firebase is not initialized. (Already has try-catch, but will refine).
-
-### 2. GitHub URL Handling
+### 1. GitHub URL Handling & Validation
 *   **[MODIFY] [GitHubService.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/data/GitHubService.kt)**
-    *   Improve repository URL parsing to handle trailing slashes and `.git` suffixes more robustly.
+    *   Refine `getRepoMetadata` to robustly parse URLs:
+        *   Handle `https://github.com/owner/repo`, `https://github.com/owner/repo.git`, `github.com/owner/repo`, etc.
+        *   Strip trailing slashes, `.git` suffixes, query parameters, and fragments.
+        *   Improve error handling to return specific, friendly error strings instead of crashing or returning empty strings silently.
 *   **[MODIFY] [AddEditProjectScreen.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/ui/screens/AddEditProjectScreen.kt)**
-    *   Refine the regex for inline validation to be more permissive for valid GitHub patterns.
+    *   Update the inline validation regex for GitHub URLs to match the improved parsing logic.
+    *   Show friendly validation text when the URL is invalid.
 
-### 3. Gemini API Stability
-*   **[MODIFY] [GeminiService.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/data/GeminiService.kt)**
-    *   Update model name to `gemini-1.5-flash` (or stable current version) if `gemini-3.5-flash` was a placeholder/typo.
-    *   Ensure raw HTTP errors are caught and returned as clean error strings.
-
-### 4. UI/UX Improvements
+### 2. Data Safety & UX during AI Generation
 *   **[MODIFY] [AddEditProjectScreen.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/ui/screens/AddEditProjectScreen.kt)**
-    *   Disable the **Save** button in the TopAppBar while AI generation is in progress to prevent data corruption.
-    *   Add a loading overlay or clearer progress indicator during generation.
+    *   **Disable Save:** The Save button in the TopAppBar will be disabled while `isGenerating` is true.
+    *   **Prevent Double Tap:** The "Generate with AI" button is already disabled during generation, but I will ensure the logic is robust.
+    *   **Friendly Errors:** Ensure Gemini errors are caught and displayed via Snackbar, never dumped into text fields.
+
+### 3. UI Polish & Stability
 *   **[MODIFY] [HomeScreen.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/ui/screens/HomeScreen.kt)**
-    *   Minor spacing adjustments to the project cards and empty state for better contrast and legibility.
+    *   Improve empty state spacing and contrast for better readability.
+    *   Refine Project Card spacing and accent line styling for a more premium feel.
+*   **[MODIFY] [ProjectRepository.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/data/ProjectRepository.kt)**
+    *   Ensure `syncFromCloud` handles offline states gracefully without blocking the UI or causing errors.
 
-### 5. PDF Export & Navigation
-*   **[MODIFY] [ProjectDetailScreen.kt](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/app/src/main/java/com/example/ui/screens/ProjectDetailScreen.kt)**
-    *   Ensure the PDF export success toast appears clearly.
-    *   Verify navigation routes for UUIDs are safely encoded if needed (though UUIDs are usually safe).
-
-### 6. QA Checklist
+### 4. QA Documentation
 *   **[NEW] [QA_CHECKLIST.md](file:///C:/Users/ckzz2/StudioProjects/RepoMuse/QA_CHECKLIST.md)**
-    *   Create a comprehensive manual QA checklist for pre-release verification.
+    *   Create a manual QA checklist covering:
+        *   Offline flow (Continue Offline).
+        *   Project CRUD operations.
+        *   GitHub URL parsing (various formats).
+        *   AI generation (success and error states).
+        *   PDF export functionality.
+        *   App persistence after restart.
 
 ## Verification Plan
 
 ### Automated Tests
-*   Run `./gradlew assembleDebug` to ensure everything builds correctly.
-*   (Optional) Run existing unit tests.
+*   Run `./gradlew assembleDebug` to verify the build.
 
 ### Manual Verification
-*   Test "Continue Offline" flow.
-*   Verify GitHub URL validation with various formats (`.git`, trailing slash).
-*   Trigger Gemini errors (missing key, no internet) and check Snackbar messages.
-*   Test PDF export and verify file naming.
-*   Check adaptive icon on emulator.
+1.  **Offline Test:** Disable internet, open app, click "Continue Offline", create a project, restart app, verify project exists.
+2.  **GitHub URL Test:** Input `github.com/google/guava.git`, click Generate, verify metadata is fetched.
+3.  **Error Handling Test:** Temporary mangle API key, verify friendly Snackbar error.
+4.  **PDF Test:** Export a project and verify the file is created in the Downloads/Documents folder.
